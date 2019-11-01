@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import "../styles/App.css";
+import axios from "axios";
 
 const App = () => {
   const [name, setName] = useState("");
 
-  const searchName = name => {
-    console.log(name);
+  const searchName = async name => {
+    const response = await axios.get(
+      `http://localhost:3001/api/people/?name=${name}`
+    );
+    return response;
   };
 
   return (
