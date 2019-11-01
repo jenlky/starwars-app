@@ -16,3 +16,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.searchbar {
+  padding: 7px;
+  border-style: solid;
+  border-radius: 10px;
+}
