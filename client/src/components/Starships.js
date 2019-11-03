@@ -26,6 +26,7 @@ const Starships = ({ starships }) => {
               </li>
               <li key={cost_in_credits}>Cost in credits: {cost_in_credits}</li>
               <li key={manufacturer}>Manufacturer: {manufacturer}</li>
+              <br />
             </React.Fragment>
           );
         })

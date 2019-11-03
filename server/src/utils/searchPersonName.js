@@ -10,19 +10,17 @@ const searchPersonName = async personName => {
 
   const people = [];
   let person = {};
+  let hasSubstring = true;
   for await (const line of readInterface) {
     const parsedLine = JSON.parse(line);
-    let hasSubstring = true;
-
     if (
       "height" in parsedLine &&
       parsedLine.name.toLowerCase().includes(personName)
     ) {
       hasSubstring = true;
     } else if (
-      ("height" in parsedLine &&
-        !parsedLine.name.toLowerCase().includes(personName)) ||
-      parsedLine === "end"
+      "height" in parsedLine &&
+      !parsedLine.name.toLowerCase().includes(personName)
     ) {
       hasSubstring = false;
     }
@@ -81,7 +79,7 @@ const searchPersonName = async personName => {
       }
     }
 
-    if ("end" in parsedLine) {
+    if (hasSubstring && "end" in parsedLine) {
       people.push(person);
       person = {};
     }
