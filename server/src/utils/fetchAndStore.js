@@ -1,6 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const moment = require("moment");
+const { extractData } = require("./extractData");
 
 const addDateToFront = data => {
   return Object.assign({ timestamp: moment() }, data);
@@ -38,6 +39,7 @@ const writePersonData = async (person, stream) => {
       stream.write(JSON.stringify(starshipWithDate) + "\n");
     }
   });
+  return { homeworld, vehicles, starships };
 };
 
 const fetchAndStore = async name => {
@@ -47,12 +49,23 @@ const fetchAndStore = async name => {
     );
     const people = response.data.results;
     const stream = fs.createWriteStream("person.txt", { flags: "a" });
+    const extractedPeople = [];
 
     for (let person of people) {
-      await writePersonData(person, stream);
+      const { homeworld, vehicles, starships } = await writePersonData(
+        person,
+        stream
+      );
+      const extractedPerson = extractData(
+        person,
+        homeworld,
+        vehicles,
+        starships
+      );
+      extractedPeople.push(extractedPerson);
     }
     stream.end();
-    return people;
+    return extractedPeople;
   } catch (error) {
     console.error(error);
   }
