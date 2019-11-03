@@ -3,18 +3,8 @@ const peopleRouter = require("./routes/people.route");
 const cors = require("cors");
 
 const app = express();
-const corsOptions = {
-  origin: [
-    "https://swapi.co/api/",
-    "http://localhost:3000/",
-    "http://localhost:3001/"
-  ],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-};
-// get it working w corsOptions for security
+// have problem w corsOption. to be fixed.
 app.use(cors());
-
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World");
