@@ -12,6 +12,7 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204
 };
+// get it working w corsOptions for security
 app.use(cors());
 
 app.use(express.json());
