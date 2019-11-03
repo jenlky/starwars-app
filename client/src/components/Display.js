@@ -3,10 +3,10 @@ import Vehicles from "./Vehicles";
 import Starships from "./Starships";
 
 const Display = ({ data }) => {
-  return data.map(person => {
+  return data.map((person, index) => {
     const { name, gender, homeworld, vehicles, starships } = person;
     return (
-      <div className="display">
+      <div className="display" key={index}>
         <p>Name: {name}</p>
         <p>Gender: {gender}</p>
         <ul>

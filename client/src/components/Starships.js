@@ -7,7 +7,7 @@ const Starships = ({ starships }) => {
       {starships.length === 0 ? (
         <p>-</p>
       ) : (
-        starships.map(starship => {
+        starships.map((starship, index) => {
           const {
             name,
             model,
@@ -17,7 +17,7 @@ const Starships = ({ starships }) => {
             manufacturer
           } = starship;
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <li key={name}>Name: {name}</li>
               <li key={model}>Model: {model}</li>
               <li key={starship_class}>Class: {starship_class}</li>
