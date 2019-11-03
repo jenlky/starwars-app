@@ -5,13 +5,12 @@ const Vehicles = ({ vehicles }) => {
     <ul>
       <h3>Vehicles</h3>
       {vehicles.map(vehicle => {
+        const { name, model, cost_in_credits } = vehicle;
         return (
           <React.Fragment>
-            <li key={vehicle.name}>Name: {vehicle.name}</li>
-            <li key={vehicle.model}>Model: {vehicle.model}</li>
-            <li key={vehicle.cost_in_credits}>
-              Cost in credits: {vehicle.cost_in_credits}
-            </li>
+            <li key={name}>Name: {name}</li>
+            <li key={model}>Model: {model}</li>
+            <li key={cost_in_credits}>Cost in credits: {cost_in_credits}</li>
           </React.Fragment>
         );
       })}
