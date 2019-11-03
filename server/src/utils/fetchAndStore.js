@@ -6,6 +6,10 @@ const addDateToFront = data => {
   return Object.assign({ timestamp: moment() }, data);
 };
 
+const addEndToFront = data => {
+  return Object.assign({ end: true }, data);
+};
+
 const writePersonData = async (person, stream) => {
   const personWithDate = JSON.stringify(addDateToFront(person));
   stream.write(personWithDate + "\n");
@@ -25,9 +29,14 @@ const writePersonData = async (person, stream) => {
   const starships = await Promise.all(
     person.starships.map(async starship => await axios.get(starship))
   );
-  starships.map(starship => {
-    const starshipWithDate = JSON.stringify(addDateToFront(starship.data));
-    stream.write(starshipWithDate + "\n");
+  starships.map((starship, index) => {
+    const starshipWithDate = addDateToFront(starship.data);
+    if (index === starships.length - 1) {
+      const lastStarship = JSON.stringify(addEndToFront(starshipWithDate));
+      stream.write(lastStarship + "\n");
+    } else {
+      stream.write(JSON.stringify(starshipWithDate) + "\n");
+    }
   });
 };
 
