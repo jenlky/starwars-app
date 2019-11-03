@@ -4,9 +4,7 @@ const Vehicles = ({ vehicles }) => {
   return (
     <ul>
       <h3>Vehicles</h3>
-      {vehicles.length === 0 ? (
-        <p>-</p>
-      ) : (
+      {vehicles ? (
         vehicles.map((vehicle, index) => {
           const { name, model, cost_in_credits } = vehicle;
           return (
@@ -17,6 +15,8 @@ const Vehicles = ({ vehicles }) => {
             </React.Fragment>
           );
         })
+      ) : (
+        <p>-</p>
       )}
     </ul>
   );

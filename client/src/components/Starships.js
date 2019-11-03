@@ -4,9 +4,7 @@ const Starships = ({ starships }) => {
   return (
     <ul>
       <h3>Starships</h3>
-      {starships.length === 0 ? (
-        <p>-</p>
-      ) : (
+      {starships ? (
         starships.map((starship, index) => {
           const {
             name,
@@ -30,6 +28,8 @@ const Starships = ({ starships }) => {
             </React.Fragment>
           );
         })
+      ) : (
+        <p>-</p>
       )}
     </ul>
   );

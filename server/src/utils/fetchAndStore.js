@@ -16,29 +16,56 @@ const writePersonData = async (person, stream) => {
   stream.write(personWithDate + "\n");
 
   const homeworld = await axios.get(person.homeworld);
-  const homeworldWithDate = JSON.stringify(addDateToFront(homeworld.data));
-  stream.write(homeworldWithDate + "\n");
-
   const vehicles = await Promise.all(
     person.vehicles.map(async vehicle => await axios.get(vehicle))
   );
-  vehicles.map(vehicle => {
-    const vehicleWithDate = JSON.stringify(addDateToFront(vehicle.data));
-    stream.write(vehicleWithDate + "\n");
-  });
-
   const starships = await Promise.all(
     person.starships.map(async starship => await axios.get(starship))
   );
-  starships.map((starship, index) => {
-    const starshipWithDate = addDateToFront(starship.data);
-    if (index === starships.length - 1) {
-      const lastStarship = JSON.stringify(addEndToFront(starshipWithDate));
-      stream.write(lastStarship + "\n");
-    } else {
-      stream.write(JSON.stringify(starshipWithDate) + "\n");
-    }
-  });
+
+  if (starships.length === 0 && vehicles.length === 0) {
+    const homeworldWithDate = addDateToFront(homeworld.data);
+    stream.write(JSON.stringify(addEndToFront(homeworldWithDate)) + "\n");
+
+    vehicles.map(vehicle => {
+      stream.write(JSON.stringify(addDateToFront(vehicle.data)) + "\n");
+    });
+
+    starships.map(starship => {
+      stream.write(SON.stringify(addDateToFront(starship.data)) + "\n");
+    });
+  } else if (starships.length === 0) {
+    stream.write(JSON.stringify(addDateToFront(homeworld.data)) + "\n");
+
+    vehicles.map(vehicle => {
+      const vehicleWithDate = addDateToFront(vehicle.data);
+      if (index === starships.length - 1) {
+        stream.write(JSON.stringify(addEndToFront(vehicleWithDate)) + "\n");
+      } else {
+        stream.write(JSON.stringify(vehicleWithDate) + "\n");
+      }
+    });
+
+    starships.map(starship => {
+      stream.write(JSON.stringify(addDateToFront(starship.data)) + "\n");
+    });
+  } else {
+    stream.write(JSON.stringify(addDateToFront(homeworld.data)) + "\n");
+
+    vehicles.map(vehicle => {
+      stream.write(JSON.stringify(addDateToFront(vehicle.data)) + "\n");
+    });
+
+    starships.map((starship, index) => {
+      const starshipWithDate = addDateToFront(starship.data);
+      if (index === starships.length - 1) {
+        stream.write(JSON.stringify(addEndToFront(starshipWithDate)) + "\n");
+      } else {
+        stream.write(JSON.stringify(starshipWithDate) + "\n");
+      }
+    });
+  }
+
   return { homeworld, vehicles, starships };
 };
 
