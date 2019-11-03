@@ -2,23 +2,33 @@ const axios = require("axios");
 const fs = require("fs");
 const moment = require("moment");
 
-const dateFormat = "Do MMMM YYYY, h:mm:ss a";
+const addDateToFront = data => {
+  return Object.assign({ timestamp: moment() }, data);
+};
 
 const writePersonData = async (person, stream) => {
-  stream.write(JSON.stringify(person) + "\n");
+  const personWithDate = JSON.stringify(addDateToFront(person));
+  stream.write(personWithDate + "\n");
 
   const homeworld = await axios.get(person.homeworld);
-  stream.write(JSON.stringify(homeworld.data) + "\n");
+  const homeworldWithDate = JSON.stringify(addDateToFront(homeworld.data));
+  stream.write(homeworldWithDate + "\n");
 
   const vehicles = await Promise.all(
     person.vehicles.map(async vehicle => await axios.get(vehicle))
   );
-  vehicles.map(vehicle => stream.write(JSON.stringify(vehicle.data) + "\n"));
+  vehicles.map(vehicle => {
+    const vehicleWithDate = JSON.stringify(addDateToFront(vehicle.data));
+    stream.write(vehicleWithDate + "\n");
+  });
 
   const starships = await Promise.all(
     person.starships.map(async starship => await axios.get(starship))
   );
-  starships.map(starship => stream.write(JSON.stringify(starship.data) + "\n"));
+  starships.map(starship => {
+    const starshipWithDate = JSON.stringify(addDateToFront(starship.data));
+    stream.write(starshipWithDate + "\n");
+  });
 };
 
 const fetchAndStore = async name => {
@@ -29,11 +39,7 @@ const fetchAndStore = async name => {
     const people = response.data.results;
     const stream = fs.createWriteStream("person.txt", { flags: "a" });
 
-    for (let x = 0; x < people.length; x++) {
-      const person = people[x];
-      if (x === 0) {
-        stream.write(moment().format(dateFormat) + "\n");
-      }
+    for (let person of people) {
       await writePersonData(person, stream);
     }
     stream.end();
