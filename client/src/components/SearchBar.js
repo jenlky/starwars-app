@@ -13,7 +13,7 @@ const SearchBar = ({ name, setName, searchName }) => {
         onChange={e => setName(e.target.value)}
         onKeyPress={e => {
           if (e.which === 13) {
-            searchName(name);
+            return searchName(name);
           }
         }}
       />
