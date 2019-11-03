@@ -45,7 +45,7 @@ const searchPersonName = async personName => {
           climate
         };
       } else if ("vehicle_class" in parsedLine) {
-        if (!("vehicles" in parsedLine)) {
+        if (!("vehicles" in person)) {
           person.vehicles = [];
         }
 
@@ -56,7 +56,7 @@ const searchPersonName = async personName => {
           cost_in_credits
         });
       } else if ("starship_class" in parsedLine) {
-        if (!("starships" in parsedLine)) {
+        if (!("starships" in person)) {
           person.starships = [];
         }
 
